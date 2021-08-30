@@ -15,7 +15,7 @@ const pool = new Pool({
   //connectionString: process.env.DATABASE_URL
   user: 'postgres',
   host: '127.0.0.1',
-  database: 'dbRentApp',
+  database: 'dbRentsApp',
 //  password: '123', // Senha escritório
   password: '123@123', // Senha notebook casa
   port: 5432,

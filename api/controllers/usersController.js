@@ -10,24 +10,24 @@ exports.createUser = async (req, res) => {
   if (errors.length > 0) {
     return res.status(400).send({ message: errors })
   }
-  const { user_name, email, perfil_id, ativo, dt_inc, us_inc, entidade_id } = req.body;
-  const password = bcrypt.hashSync(req.body.password, salt)
+  const { userName, email, password, perfilId, status, dt_inc, us_inc, entidadeId } = req.body;
+  const pass = bcrypt.hashSync(req.body.password, salt)
   const { rows } = await db.query(
-    "INSERT INTO usuarios (user_name, email, password, perfil_id, ativo, dt_inc, us_inc, entidade_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
-    [user_name, email, password, perfil_id, ativo, dt_inc, us_inc, entidade_id]
+    "INSERT INTO users (userName, email, password, perfilId, status, dt_inc, us_inc, entidadeId) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+    [userName, email, pass, perfilId, status, dt_inc, us_inc, entidadeId]
   );
 
   res.status(201).send({
     message: "user added successfully!",
     body: {
-      product: { user_name, email, password, perfil_id, ativo, dt_inc, us_inc, entidade_id }
+      product: { userName, email, password, perfilId, status, dt_inc, us_inc, entidadeId }
     },
   });
 };
 
 // ==> Método responsável por listar todos os 'Usuarios':
 exports.listAllUsers = async (_, res) => {
-  const response = await db.query('SELECT id, user_name, email, password, perfil_id, ativo, entidade_id FROM usuarios ORDER BY user_name ASC');
+  const response = await db.query('SELECT id, userName, email, password, perfilId, status, dt_inc, us_inc, entidadeId FROM users ORDER BY userName ASC');
   res.status(200).send(response.rows);
 };
 
@@ -47,7 +47,7 @@ exports.loginUser = async (req, res) => {
 
   //const password = bcrypt.hashSync(req.body.password, salt);
   const password = req.body.password;
-  const response = await db.query('SELECT id, user_name, password, perfil_id, entidade_id FROM usuarios WHERE email = $1 ',
+  const response = await db.query('SELECT id, userName, password, perfilId, entidadeId FROM users WHERE email = $1 ',
     [email]
   );
 
